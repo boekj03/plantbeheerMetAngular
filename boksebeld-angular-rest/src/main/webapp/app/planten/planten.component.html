@@ -1,0 +1,54 @@
+
+
+<p-dataTable [value]="teTonenPlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
+  <p-column field="botanischeNaam" header="Naam" sortable="true" [filter]="true"></p-column>
+
+  <p-column field="b" header="bloeitijd" >
+    <ng-template let-col let-plant="rowData" pTemplate="body">
+      {{plant.bloeiTijdString()}}
+    </ng-template>
+  </p-column>
+
+  <p-column field="hoogte" header="Hoogte" [filter]="true" filterMatchMode="equals">
+     <ng-template let-col let-plant="rowData" pTemplate="body">
+      <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.hoogte" [filter]="true"></p-dropdown>
+    </ng-template>
+
+    <ng-template pTemplate="filter" let-col >
+      <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </ng-template>
+  </p-column>
+
+  <p-column field="bladhoudend" header="Bladerdracht" [filter]="true" filterMatchMode="equals">
+    <ng-template let-col let-plant="rowData" pTemplate="body">
+      <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.bladhoudend" [filter]="true"></p-dropdown>
+    </ng-template>
+
+    <ng-template pTemplate="filter" let-col >
+      <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </ng-template>
+  </p-column>
+
+  <p-column field="kleur" header="Kleur" [filter]="true" filterMatchMode="equals">
+    <ng-template let-col let-plant="rowData" pTemplate="body">
+      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plant.kleur" [filter]="true"></p-dropdown>
+    </ng-template>
+
+    <ng-template pTemplate="filter" let-col >
+      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </ng-template>
+  </p-column>
+
+  <p-column field="b" header="Foto" >
+    <ng-template let-col let-plant="rowData" pTemplate="body">
+
+      <img class="kleineplantenfoto" src="data:image/png;base64,{{plant.base64Image}}">
+    </ng-template>
+
+  </p-column>
+
+
+
+</p-dataTable>
+
+

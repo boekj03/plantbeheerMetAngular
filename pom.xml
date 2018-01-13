@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <artifactId>boksebeld-angular</artifactId>
+  <packaging>pom</packaging>
+  <groupId>nl.boksebeld.angular</groupId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>boksebeld-angular</name>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<version.javaee-api>7.0</version.javaee-api>
+	 <hibernate.version>4.3.5.Final</hibernate.version>
+    <hsql.version>2.3.2</hsql.version>
+    <junit.version>3.8.1</junit.version>
+	<mysql.version>5.1.40</mysql.version>
+	<commons-codec.version>1.11</commons-codec.version>
+	<version.jackson-databind>2.6.3</version.jackson-databind>
+	
+ </properties>
+ 
+	 
+	 <dependencyManagement>
+		<dependencies>
+		
+		
+				<dependency>
+					<groupId>nl.boksebeld.hibernate</groupId>
+					<artifactId>boksebeld-angular-hibernate</artifactId>
+				  <version>${project.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>nl.boksebeld.rest</groupId>
+					<artifactId>boksebeld-angular-rest</artifactId>
+				  <version>${project.version}</version>
+				</dependency>
+		
+				
+				<dependency>
+				  <groupId>javax</groupId>
+				  <artifactId>javaee-api</artifactId>
+				  <version>${version.javaee-api}</version>
+				  <scope>provided</scope>
+				</dependency>
+			
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${version.jackson-databind}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons-codec.version}</version>
+			</dependency>
+			
+			
+			  <dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsql.version}</version>
+			  </dependency>
+			  
+			  <dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
+			</dependency>
+
+			  <!-- hinbernate -->
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+
+			  <!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  
+			     <!-- optional -->
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-osgi</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-envers</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-c3p0</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-proxool</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-infinispan</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate.version}</version>
+			  </dependency>
+			  
+
+			  <!-- optional -->
+			
+			  
+			  <!-- junit -->
+			  <dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			  </dependency>
+		</dependencies>
+	  </dependencyManagement>
+ 
+  
+  <profiles>
+		<profile>
+			<!-- When built in OpenShift the 'openshift' profile will be used when 
+				invoking mvn. -->
+			<!-- Use this profile for any OpenShift specific customization your app 
+				will need. -->
+			<!-- By default that is to put the resulting archive into the 'webapps' 
+				folder. -->
+			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+			<id>openshift</id>
+			<build>
+				<finalName>plannenbeheer</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.1.1</version>
+						<configuration>
+							<outputDirectory>deployments</outputDirectory>
+							<warName>ROOT</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+  <description>A small address book web application developed with Apache Angular, Hibernate and HSQL DB</description>
+  <modules>
+  	<module>boksebeld-angular-hibernate</module>
+  	<module>boksebeld-angular-rest</module>
+  </modules>
+  
+</project>

@@ -1,0 +1,234 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>nl.boksebeld.rest</groupId>
+  <artifactId>boksebeld-angular-rest</artifactId>
+  <packaging>war</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>boksebeld-angular-rest</name>
+
+  <parent>
+  	<groupId>nl.boksebeld.angular</groupId>
+  	<artifactId>boksebeld-angular</artifactId>
+  	<version>1.0.0-SNAPSHOT</version>
+  </parent>
+  
+	<developers>
+		<developer>
+			<id>boekhorst</id>
+			<name>Hans te Boekhrost</name>
+			<email>hansteboekhorst@gmail.com</email>
+		</developer>
+	</developers>
+	
+  
+  <properties>
+    <!-- versions for dependencies -->
+ 
+    <junit.version>3.8.1</junit.version>
+   
+	<mysql.version>5.1.40</mysql.version>
+	
+	<node.version>v6.9.1</node.version>
+    <yarn.version>v0.24.6</yarn.version>
+    <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
+	<environment>prod</environment>
+	
+  </properties>
+
+  <dependencies>
+
+    <!-- -->
+ 
+	<dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+    </dependency>
+    
+    <dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+	</dependency>
+	
+ 	<dependency>
+		<groupId>nl.boksebeld.hibernate</groupId>
+  		<artifactId>boksebeld-angular-hibernate</artifactId>
+	</dependency>
+   
+   <dependency>
+		<groupId>commons-codec</groupId>
+		<artifactId>commons-codec</artifactId>
+	</dependency>
+			
+    <!-- junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  
+  
+  <build>
+	<pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<!--<version>${version.enterprise.level}</version>-->
+					<warSourceDirectory>${project.basedir}/src/main/dist</warSourceDirectory>
+					<webXml>${project.basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+					<packagingExcludes>**/log4j.properties</packagingExcludes>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<classpathPrefix>lib/</classpathPrefix>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<addExtensions>false</addExtensions>
+						</manifest>
+						<manifestEntries>
+							<!--<Mode>development</Mode> -->
+							<!--<Implementation-Build>${buildNumber}</Implementation-Build> -->
+							<Url>${project.url}</Url>
+							<Java-Compiler-Level>${version.java.compiler}</Java-Compiler-Level>
+							<Java-Source-Level>${version.java.source}</Java-Source-Level>
+							<Java-Target-Level>${version.java.target}</Java-Target-Level>
+							<Java-Vendor>${java.vendor}</Java-Vendor>
+							<Builder>${user.name}</Builder>
+							<Specification-Title>${project.name}</Specification-Title>
+							<Specification-Version>${project.version}</Specification-Version>
+							<Specification-Vendor>${project.organization.name}</Specification-Vendor>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+							<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+							<X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+							<X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+						</manifestEntries>
+						<addMavenDescriptor>true</addMavenDescriptor>
+					</archive>
+
+					<webResources>
+
+						<resource>
+							<directory>${project.basedir}/src/main/webapp/WEB-INF</directory>
+							<targetPath>/WEB-INF</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>beans.xml</include>
+								<include>ibm*.xml</include>
+								</includes>
+							</resource>
+
+						<!-- Filter de application.properties om het versienummer , artifactId
+						(ictservicecode) en ict service naam er in te krijgen -->
+						<resource>
+							<directory>${project.basedir}/src/main/resources</directory>
+							<targetPath>/WEB-INF/classes</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/*.properties</include>
+							</includes>
+							</resource>
+
+						<!-- Filter de versie-info.txt om het versienummer er in te krijgen -->
+						<resource>
+							<directory>${project.basedir}/src/main/webapp</directory>
+							<targetPath>/</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>versie-info.txt</include>
+							</includes>
+						</resource>
+
+					</webResources>
+
+				</configuration>
+			</plugin>
+
+			<!-- Verwijdert alle bestanden uit web/classes. -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<filesets>
+					<fileset>
+					<directory>${project.basedir}/src/main/webapp/WEB-INF/classes</directory>
+					<includes>
+						<include>**/*.*</include>
+					</includes>
+					</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<!-- Installeert node.js en npm, maakt frontend-build en voert javascript tests uit -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.0</version>
+					<executions>
+						<execution>
+							<id>install node and npm</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>install-node-and-npm</goal>
+							</goals>
+							<configuration>
+								<nodeVersion>v6.9.4</nodeVersion>
+								<npmVersion>3.10.10</npmVersion>
+								<installDirectory>target</installDirectory>
+								<!--npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven-->
+							</configuration>
+						</execution>
+
+						<execution>
+							<id>npm install</id>
+							<goals>
+								<goal>npm</goal>
+							</goals>
+							<configuration>
+								<installDirectory>target</installDirectory>
+								<workingDirectory>src/main</workingDirectory>
+					
+								<!--npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven-->
+							</configuration>
+						</execution>
+
+						<execution>
+							<id>ng build for production</id>
+							<goals>
+								<goal>npm</goal>
+							</goals>
+							<configuration>
+								<installDirectory>target</installDirectory>
+								<workingDirectory>src/main</workingDirectory>
+								<arguments>run buildProd</arguments>
+							</configuration>
+						</execution>
+
+					
+					</executions>
+			</plugin>
+
+		</plugins>
+
+	</pluginManagement>
+
+	<plugins>
+		<plugin>
+			<groupId>com.github.eirslett</groupId>
+			<artifactId>frontend-maven-plugin</artifactId>
+		</plugin>
+	</plugins>
+
+</build>
+
+</project>

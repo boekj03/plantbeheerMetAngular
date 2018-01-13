@@ -1,0 +1,56 @@
+<div class="ui-g ui-fluid">
+
+  <div class="ui-g-12 ui-md-6">
+      <div class="ui-inputgroup">
+        <input type="text" pInputText [(ngModel)]="onderhandenPlan.naam"/>
+        <p-calendar [(ngModel)]="onderhandenPlan.datum" monthNavigator="true" yearNavigator="true" yearRange="2015:2030" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+  </div>
+  <div class="ui-g-12 ui-md-6">
+  </div>
+</div>
+
+<p-dataGrid [value]="onderhandenPlan.plantPlaatsLijst" [immutable]="false" [paginator]="true" [rows]="20">
+  <p-header>
+    plant plaats item lijst
+  </p-header>
+  <ng-template let-plantPlaats pTemplate="item">
+    <div style="padding:3px" class="ui-g-12 ui-md-3">
+      <p-panel [header]="plantPlaats.naam" [style]="{'text-align':'center'}">
+        <img src="assets/lavendel.jpg" width="60">
+        <div class="plant-detail">naam : {{plantPlaats.plant.botanischeNaam}}</div>
+
+        <i class="fa fa-search" (click)="selectPlant(plantPlaats.plant)" style="cursor:pointer"></i>
+        <i class="fa fa-times-circle" (click)="deletePlanPlaats(plantPlaats)" style="cursor:pointer"></i>
+
+      </p-panel>
+    </div>
+  </ng-template>
+</p-dataGrid>
+
+<p-dialog header="Plant details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="325" (onAfterHide)="onDialogHide()">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad" *ngIf="selectedPlant" style="font-size:16px;text-align:center;padding:20px">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12" style="text-align:center"><img class="plantenfoto"  src="assets/lavendel.jpg"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">Botanisch naam: </div>
+      <div class="ui-grid-col-8">{{selectedPlant.botanischeNaam}}</div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">bloeitijd: </div>
+      <div class="ui-grid-col-8">{{selectedPlant.bloeiTijdString()}}</div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">bladerdracht: </div>
+      <div class="ui-grid-col-8">{{selectedPlant.bladhoudend}}</div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">hoogte: </div>
+      <div class="ui-grid-col-8">{{selectedPlant.hoogte}}</div>
+    </div>
+
+
+  </div>
+</p-dialog>
