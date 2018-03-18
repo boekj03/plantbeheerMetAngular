@@ -17,6 +17,7 @@ export class Plant {
     kleur: string;
     plantsoort: string;
     lichtbehoefte: string;
+    image: any[] = new Array();
     base64Image: string;
     newbase64Image: string;
 

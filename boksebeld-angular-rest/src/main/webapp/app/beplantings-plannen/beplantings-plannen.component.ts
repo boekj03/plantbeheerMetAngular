@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {PlannenService} from "../services/plannenService";
 import {BeplantingsPlan} from "../model/beplantingsPlan";
+import {Plant} from '../model/plant';
+import {ExcelService} from '../services/excelService';
+import 'rxjs/Rx' ;
+import {WindowRefService} from '../services/windowRef';
 
 @Component({
   selector: 'app-beplantings-plannen',
@@ -8,23 +12,50 @@ import {BeplantingsPlan} from "../model/beplantingsPlan";
 })
 export class BeplantingsPlannenComponent implements OnInit {
 
-  teTonenPlannenLijst : BeplantingsPlan[] = new Array();
+  teTonenPlannenLijst: BeplantingsPlan[] = new Array();
 
-  constructor(private plannenService:PlannenService) { }
+  constructor(private plannenService: PlannenService, private excelService: ExcelService, private windowService: WindowRefService) { }
 
   ngOnInit() {
-    this.teTonenPlannenLijst = this.plannenService.getBeplantingsPlannen();
+    this.getPlannen();
   }
 
-  copyBeplantingsplan(plan: BeplantingsPlan){
-    let nieuwPlan : BeplantingsPlan =  this.plannenService.createCopy(plan);
-    this.teTonenPlannenLijst.unshift(nieuwPlan);
+  private getPlannen() {
+    this.plannenService.getPlannenLijst().subscribe(
+      planArray => {
+        this.teTonenPlannenLijst = planArray;
+      });
+  }
+  deletePlan(plan: BeplantingsPlan) {
+    this.plannenService.deletePlan(plan).subscribe(
+      deletplant => this.getPlannen()
+    );
+
   }
 
-  deleteBeplantingsplan(plan: BeplantingsPlan) {
-    var index = this.teTonenPlannenLijst.indexOf(plan, 0);
-    if (index > -1) {
-      this.teTonenPlannenLijst.splice(index, 1);
+  copyPlan(plan: BeplantingsPlan) {
+    this.plannenService.copyPlan(plan).subscribe(
+      copyplan => this.getPlannen()
+    );
+  }
+
+
+  excelPlan (plan: BeplantingsPlan) {
+
+    const naam = plan.naam;
+      const result = this.excelService.excelPlan(plan.id);
+      result.subscribe(
+        success => {
+          const blob = new Blob([success.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = naam;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+      );
     }
-  }
+
+
 }

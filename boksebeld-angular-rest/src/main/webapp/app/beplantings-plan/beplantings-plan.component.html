@@ -1,56 +1,128 @@
 <div class="ui-g ui-fluid">
 
-  <div class="ui-g-12 ui-md-6">
-      <div class="ui-inputgroup">
-        <input type="text" pInputText [(ngModel)]="onderhandenPlan.naam"/>
-        <p-calendar [(ngModel)]="onderhandenPlan.datum" monthNavigator="true" yearNavigator="true" yearRange="2015:2030" dateFormat="dd.mm.yy"></p-calendar>
-      </div>
+    <div class="ui-g-12 ui-md-2">
+      <input *ngIf="onderhandenPlan" type="text" pInputText [(ngModel)]="onderhandenPlan.naam" size="20"/>
+    </div>
+
+    <div class="ui-g-12 ui-md-1">
+      <button pButton type="button" label="Save"  (click)="saveBeplantingsPlan()" class="ui-button-success"></button>
+    </div>
+  <div class="ui-g-12 ui-md-1">
+    <a routerLink="/plannen"><button pButton type="button" label="terug"   class="ui-button-success"></button></a>
   </div>
-  <div class="ui-g-12 ui-md-6">
-  </div>
+
+  <div class="ui-g-12 ui-md-8"></div>
 </div>
 
-<p-dataGrid [value]="onderhandenPlan.plantPlaatsLijst" [immutable]="false" [paginator]="true" [rows]="20">
-  <p-header>
-    plant plaats item lijst
-  </p-header>
-  <ng-template let-plantPlaats pTemplate="item">
-    <div style="padding:3px" class="ui-g-12 ui-md-3">
-      <p-panel [header]="plantPlaats.naam" [style]="{'text-align':'center'}">
-        <img src="assets/lavendel.jpg" width="60">
-        <div class="plant-detail">naam : {{plantPlaats.plant.botanischeNaam}}</div>
-
-        <i class="fa fa-search" (click)="selectPlant(plantPlaats.plant)" style="cursor:pointer"></i>
-        <i class="fa fa-times-circle" (click)="deletePlanPlaats(plantPlaats)" style="cursor:pointer"></i>
-
-      </p-panel>
-    </div>
-  </ng-template>
-</p-dataGrid>
-
-<p-dialog header="Plant details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="325" (onAfterHide)="onDialogHide()">
-  <div class="ui-grid ui-grid-responsive ui-grid-pad" *ngIf="selectedPlant" style="font-size:16px;text-align:center;padding:20px">
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-12" style="text-align:center"><img class="plantenfoto"  src="assets/lavendel.jpg"></div>
-    </div>
-
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4">Botanisch naam: </div>
-      <div class="ui-grid-col-8">{{selectedPlant.botanischeNaam}}</div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4">bloeitijd: </div>
-      <div class="ui-grid-col-8">{{selectedPlant.bloeiTijdString()}}</div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4">bladerdracht: </div>
-      <div class="ui-grid-col-8">{{selectedPlant.bladhoudend}}</div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4">hoogte: </div>
-      <div class="ui-grid-col-8">{{selectedPlant.hoogte}}</div>
-    </div>
 
 
-  </div>
-</p-dialog>
+
+
+<p-dataTable *ngIf="onderhandenPlan" [value]="onderhandenPlan.plantPlaatsLijst" [rows]="10" [immutable]="false"   [globalFilter]="gb" #dt>
+
+  <p-column field="b" header="Naam" [style]="{'width':'100px'}">
+    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
+      <input type="text" pInputText [(ngModel)]="plantPlaats.naam" size="6"/>
+    </ng-template>
+  </p-column>
+
+  <p-column field="b" header="Meters"  [style]="{'width':'200px'}">
+    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
+      <input type="number"  [(ngModel)]="plantPlaats.vierkanteMeters" size="1"/>
+    </ng-template>
+  </p-column>
+
+  <!--<p-column field="naam" header="Naam"  [style]="{'width':'100px'}" [filter]="true"></p-column>-->
+  <p-column field="plant.botanischeNaam" sortable="true" header="Botanische Naam" ></p-column>
+
+  <p-column field="plant.nederlandseNaam" sortable="true" header="Nederlandse Naam" ></p-column>
+
+  <p-column field="plant.kleur" header="Kleur" sortable="true" [filter]="true" filterMatchMode="equals">
+    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
+      <p-dropdown [readonly]="true" [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plantPlaats.plant.kleur" [filter]="true" ></p-dropdown>
+    </ng-template>
+
+    <ng-template pTemplate="filter" let-col >
+      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </ng-template>
+  </p-column>
+
+  <p-column field="b" header="Foto" [style]="{'width':'100px'}">
+    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
+      <img class="kleineplantenfoto" src="data:image/png;base64,{{plantPlaats.plant.base64Image}}">
+    </ng-template>
+  </p-column>
+
+  <p-column  header="Acties" [style]="{'width':'100px'}">
+    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
+
+      <button pButton type="button" icon="fa-plus" iconPos="right" (click)="verwijderPlantplaats(plantPlaats)" class="ui-button-danger"></button>
+
+    </ng-template>
+  </p-column>
+</p-dataTable>
+
+<br><br><br><br>
+<h3>Planten toevoegen</h3>
+<p-inputSwitch onLabel="on" offLabel="off" [(ngModel)]="toevoegswitch"></p-inputSwitch>
+
+<div *ngIf="toevoegswitch">
+
+
+
+  <p-dataTable *ngIf="allePlantLijst" [value]="allePlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
+
+
+  <p-column field="botanischeNaam" sortable="true" header="Botanische Naam" [filter]="true"  ></p-column>
+
+  <p-column field="nederlandseNaam" sortable="true" header="Nederlandse Naam" [filter]="true"  ></p-column>
+
+  <p-column field="kleur" header="Kleur" sortable="true" [filter]="true" filterMatchMode="equals">
+    <ng-template let-col let-plant="rowData" pTemplate="body">
+      <p-dropdown [readonly]="true" [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plant.kleur" [filter]="true" ></p-dropdown>
+    </ng-template>
+
+    <ng-template pTemplate="filter" let-col >
+      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </ng-template>
+  </p-column>
+
+
+    <p-column field="hoogte" header="Hoogte" [filter]="true" filterMatchMode="equals">
+      <ng-template let-col let-plant="rowData" pTemplate="body">
+        <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.hoogte" [filter]="true"></p-dropdown>
+      </ng-template>
+
+      <ng-template pTemplate="filter" let-col >
+        <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="bladhoudend" header="Bladerdracht" [filter]="true" filterMatchMode="equals">
+      <ng-template let-col let-plant="rowData" pTemplate="body">
+        <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.bladhoudend" [filter]="true"></p-dropdown>
+      </ng-template>
+
+      <ng-template pTemplate="filter" let-col >
+        <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}"   (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+      </ng-template>
+    </p-column>
+
+
+    <p-column field="b" header="Foto" [style]="{'width':'100px'}">
+      <ng-template let-col let-plant="rowData" pTemplate="body">
+        <img class="kleineplantenfoto" src="data:image/png;base64,{{plant.base64Image}}">
+      </ng-template>
+    </p-column>
+
+    <p-column  header="Acties" [style]="{'width':'100px'}">
+      <ng-template let-col let-plant="rowData" pTemplate="body">
+
+        <button pButton type="button" icon="fa-plus" iconPos="right" (click)="selectplant(plant)" class="ui-button-success"></button>
+
+
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

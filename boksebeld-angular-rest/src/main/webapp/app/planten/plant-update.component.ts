@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlantenService} from "../services/plantenService";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 import {Plant} from "../model/plant";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
@@ -11,12 +11,13 @@ import {
   plantsoortConstants
 } from "../model/enumConstants";
 import {Message} from 'primeng/primeng';
+import {UploadService} from '../services/uploadService';
 
 @Component({
   selector: 'app-plant-update',
   templateUrl: './plant-update.component.html'
 })
-export class PlantUpdateComponent implements OnInit {
+export class PlantUpdateComponent implements OnInit, OnDestroy{
   id: string;
   onderhandePlant: Plant = new Plant();
   private sub: Subscription;
@@ -27,12 +28,13 @@ export class PlantUpdateComponent implements OnInit {
   bloeitijdLijst: SelectItem[] = bloeitijdConstants;
   plantsoortLijst: SelectItem[] = plantsoortConstants;
 
-
+  img: string;
+  imgageFile: any;
   msgs: Message[];
 
   uploadedFiles: any[] = [];
 
-  constructor(private route: ActivatedRoute, private plantenService: PlantenService) {
+  constructor(private route: ActivatedRoute, private router: Router,  private plantenService: PlantenService, private uploadService: UploadService) {
 
   }
 
@@ -40,35 +42,65 @@ export class PlantUpdateComponent implements OnInit {
     this.sub = this.route.params
       .subscribe((params: any) => {
         this.id = params.id;
-        this.plantenService.getplant(this.id).subscribe(
-          onderhandePlant => {this.onderhandePlant = onderhandePlant;
-          });
-
+        if (this.id) {
+          this.getOnderhandenPlant();
+        } else {
+         this.onderhandePlant = new Plant();
+        }
       });
 
   }
 
-  myUploader(event) {
-    console.log("in de onUpload");
-    const file: File = event.files[0];
-    this.readThis(file);
+  private getOnderhandenPlant() {
+      this.plantenService.getplant(this.id).subscribe(
+      onderhandePlant => {
+        this.onderhandePlant = onderhandePlant;
+        console.log('DDDDIT IS HET ID NA bij get onderhande plant ', this.id);
+      });
 
-   }
 
-  updatePlant() {
-    this.plantenService.savePlant(this.onderhandePlant).subscribe();
+
   }
 
-  readThis(file: File): void {
+
+
+  updatePlant() {
+    if (this.id) {
+      this.plantenService.updatePlant(this.onderhandePlant).subscribe(
+        update => {
+          this.getOnderhandenPlant();
+          this.router.navigate(['/catalogus']);
+        }
+      );
+    } else {
+      this.plantenService.saveNewPlant(this.onderhandePlant).subscribe(
+         onderhandePlant => {
+            this.onderhandePlant = onderhandePlant;
+           this.router.navigate(['/catalogus']);
+         });
+    }
+
+  }
+
+  myUploader(event) {
+    console.log('in de onUpload');
+    const file: File = event.files[0];
+
+
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.onderhandePlant.newbase64Image = myReader.result;
+      this.imgageFile = myReader.result;
     }
     myReader.readAsDataURL(file);
+    this.uploadService.uploadFotoFile(file, this.onderhandePlant.id).subscribe();
+
+   // this.uploadService.uploadFotoAsString(file, this.onderhandePlant.id).subscribe(   );
   }
 
-  ngOnDestroy(){
+
+
+  ngOnDestroy() {
     this.sub.unsubscribe();
   }
 

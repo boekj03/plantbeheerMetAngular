@@ -118,26 +118,27 @@
 
 
 <div class="ui-g ui-fluid">
-  <div class="ui-g-12 ui-md-1">upload foto: </div>
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-inputgroup">
-      <p-fileUpload mode="advanced" name="myfile[]" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
-    </div>
-  </div>
+
   <div class="ui-g-12 ui-md-1">huidige foto: </div>
   <div class="ui-g-12 ui-md-3">
     <div class="ui-inputgroup">
 
-      <div class="ui-grid-col-12" style="text-align:center" *ngIf="onderhandePlant.newbase64Image"><img class="plantenfoto" src="data:image/png;base64,{{onderhandePlant.base64Image}}"></div>
-      <div class="ui-grid-col-12" style="text-align:center" *ngIf="onderhandePlant.newbase64Image"><img class="plantenfoto" [src]="onderhandePlant.newbase64Image"></div>
-    </div>
+        <img class="plantenfoto" src="data:image/png;base64,{{onderhandePlant.base64Image}}">
+         <img src="{{imgageFile}}" id="temp_image" class="plantenfoto">
+     </div>
   </div>
 
 
-  <div class="ui-g-12 ui-md-1"> <a routerLink="/home"><button pButton type="button" class="ui-button-info" label="cancel"></button></a></div>
-  <div class="ui-g-12 ui-md-1">  <a routerLink="/home"><button pButton type="button" class="ui-button-info" label="update" (click)="updatePlant()"></button></a></div>
+  <div class="ui-g-12 ui-md-1"> <a routerLink="/catalogus"><button pButton type="button" class="ui-button-info" label="cancel"></button></a></div>
+  <div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="update" (click)="updatePlant()"></button></div>
   <div class="ui-g-12 ui-md-2"></div>
 </div>
 
-<h3>Basic</h3>
+<h3>Kies een nieuwe fotootje</h3>
+<p-fileUpload name="file" url="./rest/image/upload"></p-fileUpload>
+<p-fileUpload mode="advanced" chooseLabel="Kies foto" cancelLabel="Annuleer" name="myfile[]" maxFileSize="40000" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
+
+
+
+
 

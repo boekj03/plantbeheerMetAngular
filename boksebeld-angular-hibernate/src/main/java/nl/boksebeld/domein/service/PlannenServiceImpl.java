@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import nl.boksebeld.domein.plaats.BeplantingsPlan;
+import nl.boksebeld.domein.plaats.PlantPlaats;
 import nl.boksebeld.hibernate.PlannenDAO;
-
 
 public class PlannenServiceImpl implements PlannenService {
 
@@ -36,6 +36,17 @@ public class PlannenServiceImpl implements PlannenService {
 	public void deleteBeplantingsPlan(BeplantingsPlan beplantingsPlan) {
 		beplantingsPlanDAO.deleteBeplantingsPlan(beplantingsPlan);
 
+	}
+
+	@Override
+	public void deletePlantPlaats(PlantPlaats plantPlaats) {
+		beplantingsPlanDAO.deletePlantPlaats(plantPlaats);
+
+	}
+
+	@Override
+	public PlantPlaats getPlantPlaats(int id) {
+		return beplantingsPlanDAO.getPlantPlaats(id);
 	}
 
 }

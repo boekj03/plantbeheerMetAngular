@@ -6,37 +6,34 @@ import {PlantZoekItem} from '../model/plantZoekItem';
 import {Observable} from 'rxjs/Observable';
 import {PlantenMapper} from '../model/plantenMapper';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {RequestOptions} from '@angular/http';
+import {Http, RequestOptions} from '@angular/http';
 
 @Injectable()
 export class PlantenService {
 
+  url = 'rest/planten';
 
+  constructor(private http: HttpClient, private httpGeenClient: Http) {}
 
-  constructor(private http: HttpClient) {}
+  getPlantenContainer(): Observable<Plant []> {
 
-  getPlantenContainer(): Observable<PlantLijstContainer> {
-
-    return this.http.get('http://localhost:8080/boksebeld-angular-rest-1.0.0-SNAPSHOT/rest/allePlanten')
-      .map(this.extractPlantContainer);
+    return this.http.get<Plant []>(this.url);
   }
 
-  private extractPlantContainer(response: Response) {
-   let plantLijstContainer: PlantLijstContainer;
-    plantLijstContainer = PlantenMapper.getPlantenLijst(response);
-   return plantLijstContainer;
-  }
+  private extractPlantlijst(response: Response): Plant[] {
+    return PlantenMapper.getPlantenLijst(response);
+   }
 
 
   getplant(id: string): Observable<Plant> {
-    console.log('getplant wordt aangeroepen met id ' + id);
-    const params = new HttpParams().set('id', id);
 
-    return this.http.get('http://localhost:8080/boksebeld-angular-rest-1.0.0-SNAPSHOT/rest/plant', { params: params })
+
+    return this.http.get(this.url + '/' + id)
       .map(this.extractPlant);
   }
 
   private extractPlant(response: Response) {
+
     let plant: Plant;
     plant = PlantenMapper.getPlant(response);
     return plant;
@@ -52,21 +49,47 @@ export class PlantenService {
 
 
 
-
- savePlant(onderhandePlant: Plant) {
-
-   const plant = JSON.stringify(onderhandePlant);
-   const oldimage = JSON.stringify(onderhandePlant.base64Image);
-   const newimage = JSON.stringify(onderhandePlant.newbase64Image);
-
-   const formdata: FormData = new FormData();
-   formdata.append('plant' , plant);
-   formdata.append('oldimage' , oldimage);
-   formdata.append('newimage' , newimage);
-
-   const headers = new Headers({ 'Content-Type': 'application/json' });
-   return this.http.post('http://localhost:8080/boksebeld-angular-rest-1.0.0-SNAPSHOT/rest/saveplant', formdata,
+  updatePlant(onderhandePlant: Plant) {
+    const plant = JSON.stringify(onderhandePlant);
+    const formdata: FormData = new FormData();
+    formdata.append('plant' , plant);
+   return this.http.put(this.url, formdata,
       {headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')});
-     // {headers: new HttpHeaders().set('Content-Type', 'application/json')});
+  }
+
+  saveNewPlant(onderhandePlant: Plant): Observable<Plant>  {
+    const plant = JSON.stringify(onderhandePlant);
+    const formdata: FormData = new FormData();
+    formdata.append('plant' , plant);
+    return this.http.post(this.url, formdata,
+      {headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')})
+      .map(this.extractPlant);
+  }
+
+
+ deletePlant(onderhandePlant: Plant) {
+    const id =  '' + onderhandePlant.id;
+
+
+   return this.http.delete( this.url + '/' + id);
  }
+
+  copyPlant(onderhandePlant: Plant) {
+
+    return this.http.post(this.url + '/copyplant',
+      onderhandePlant, {headers: new HttpHeaders().set('Content-Type', 'application/json')});
+  }
+
+  uploadFoto(file: String, id: number) {
+    console.log(file);
+
+    file = file.replace(/^data:image\/png;base64,/, '');
+    //file = file.split(',')[0].split(':')[1].split(';')[0];
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    formData.append('id', id);
+    return this.http.post(this.url + '/jersey' ,      formData,
+ {headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')});
+  }
+
 }

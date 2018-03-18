@@ -1,17 +1,25 @@
 
+<div class="ui-g ui-fluid">
+
+  <div class="ui-g-12 ui-md-2">
+    <a routerLink="/nieuwePlant"><button pButton type="button" label="Nieuwe plant"   class="ui-button-success"></button></a>
+  </div>
+
+  <div class="ui-g-12 ui-md-10"></div>
+</div>
 
 <p-dataTable [value]="teTonenPlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
-  <p-column field="botanischeNaam" header="Naam" sortable="true" [filter]="true"></p-column>
+  <p-column field="botanischeNaam" header="Naam" sortable="true" [filter]="true"  ></p-column>
 
-  <p-column field="b" header="bloeitijd" >
-    <ng-template let-col let-plant="rowData" pTemplate="body">
-      {{plant.bloeiTijdString()}}
-    </ng-template>
-  </p-column>
+  <!--<p-column field="b" header="bloeitijd" >-->
+    <!--<ng-template let-col let-plant="rowData" pTemplate="body">-->
+      <!--{{plant.bloeiTijdString()}}-->
+    <!--</ng-template>-->
+  <!--</p-column>-->
 
   <p-column field="hoogte" header="Hoogte" [filter]="true" filterMatchMode="equals">
      <ng-template let-col let-plant="rowData" pTemplate="body">
-      <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.hoogte" [filter]="true"></p-dropdown>
+      <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.hoogte" [readonly]="true" [filter]="true"></p-dropdown>
     </ng-template>
 
     <ng-template pTemplate="filter" let-col >
@@ -21,7 +29,7 @@
 
   <p-column field="bladhoudend" header="Bladerdracht" [filter]="true" filterMatchMode="equals">
     <ng-template let-col let-plant="rowData" pTemplate="body">
-      <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.bladhoudend" [filter]="true"></p-dropdown>
+      <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.bladhoudend" [readonly]="true" [filter]="true"></p-dropdown>
     </ng-template>
 
     <ng-template pTemplate="filter" let-col >
@@ -31,7 +39,7 @@
 
   <p-column field="kleur" header="Kleur" [filter]="true" filterMatchMode="equals">
     <ng-template let-col let-plant="rowData" pTemplate="body">
-      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plant.kleur" [filter]="true"></p-dropdown>
+      <p-dropdown [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plant.kleur" [readonly]="true" [filter]="true"></p-dropdown>
     </ng-template>
 
     <ng-template pTemplate="filter" let-col >
@@ -47,7 +55,16 @@
 
   </p-column>
 
+  <p-column  header="Acties" >
+    <ng-template let-col let-plant="rowData" pTemplate="body">
 
+      <button pButton type="button" icon="fa-close" iconPos="right" (click)="deletePlant(plant)" class="ui-button-danger"></button>
+      <button pButton type="button" icon="fa-cc" iconPos="center" (click)="copyPlant(plant)" class="ui-button-info"></button>
+      <a [routerLink]="['/plant', plant.id]"><button pButton type="button" icon="fa-pencil-square-o" iconPos="center" class="ui-button-success"></button></a>
+
+
+    </ng-template>
+  </p-column>
 
 </p-dataTable>
 

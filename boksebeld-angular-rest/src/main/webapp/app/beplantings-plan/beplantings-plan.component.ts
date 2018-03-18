@@ -1,59 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {PlannenService} from "../services/plannenService";
 import {Subscription} from "rxjs/Subscription";
 import {BeplantingsPlan} from "../model/beplantingsPlan";
 import {Plant} from "app/model/plant";
 import {PlantPlaats} from "app/model/plantPlaats";
+import {SelectItem} from 'primeng/components/common/selectitem';
+import {bladhoudendConstantsFilter, hoogteConstantsFiltering, kleurenConstantsFilter} from '../model/enumConstants';
+import {PlantenService} from '../services/plantenService';
 
 @Component({
   selector: 'app-beplantings-plan',
-  templateUrl: './beplantings-plan.component.html'
+  templateUrl: './beplantings-plan.component.html',
+  styleUrls: ['./beplantings-plan.component.css']
 })
-export class BeplantingsPlanComponent implements OnInit {
+export class BeplantingsPlanComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
   id: string;
   onderhandenPlan: BeplantingsPlan;
-  nieuwConstantString: string = 'nieuw';
+  allePlantLijst: Plant[] = new Array();
+  keuzekleuren: SelectItem[] = kleurenConstantsFilter;
+  hoogteLijst: SelectItem[] = hoogteConstantsFiltering;
+  bladhoudendLijst: SelectItem[] = bladhoudendConstantsFilter;
+
+  toevoegswitch: boolean;
+  constructor(private route: ActivatedRoute, private plannenService: PlannenService, private plantenService: PlantenService ) { }
 
 
+  public selectplant(selectedPlant: Plant) {
+    const plantPlaats: PlantPlaats = new PlantPlaats();
+    plantPlaats.naam = selectedPlant.code;
+    plantPlaats.plant = selectedPlant;
+    this.onderhandenPlan.plantPlaatsLijst.push(plantPlaats );
+  }
 
-  selectedPlant: Plant;
-  displayDialog: boolean;
 
-  constructor(private route: ActivatedRoute, private plannenService:PlannenService) { }
+  public verwijderPlantplaats(plantPlaats: PlantPlaats) {
+    this.onderhandenPlan.plantPlaatsLijst.splice(this.onderhandenPlan.plantPlaatsLijst.indexOf(plantPlaats), 1);
+    if (plantPlaats.id) {
+      this.plannenService.deletePlantPlaats(plantPlaats.id).subscribe();
+    }
+  }
 
   ngOnInit() {
     this.sub = this.route.params
       .subscribe((params: any) => {
         this.id = params.id;
-
+        if (this.id) {
+           this.getOnderhandenBeplantingsPlant();
+        } else {
+          this.onderhandenPlan = new BeplantingsPlan();
+        }
+        this.getPlanten();
       });
-    console.log("id is" + this.id);
-
-    if (this.id ===this.nieuwConstantString ){
-      let nieuwPlan: BeplantingsPlan = new BeplantingsPlan();
-
-      this.onderhandenPlan = this.plannenService.saveBeplantingsPlan(nieuwPlan);
-
-    }else {
-      this.onderhandenPlan = this.plannenService.getBeplantingsPlan(this.id);
-    }
   }
 
-  selectPlant(plant: Plant) {
-    this.selectedPlant = plant;
-    this.displayDialog = true;
-  }
-  deletePlanPlaats(plaats: PlantPlaats) {
-    var index = this.onderhandenPlan.plantPlaatsLijst.indexOf(plaats, 0);
-    if (index > -1) {
-      this.onderhandenPlan.plantPlaatsLijst.splice(index, 1);
-     }
+  private getPlanten() {
+    this.plantenService.getPlantenContainer().subscribe(
+      allePlantLijst => {
+        this.allePlantLijst = allePlantLijst;
+      });
   }
 
-  ngOnDestroy(){
+  private getOnderhandenBeplantingsPlant() {
+    this.plannenService.getplan(this.id).subscribe(
+      onderhandenPlan => {
+        this.onderhandenPlan = onderhandenPlan;
+       });
+  }
+
+
+  public saveBeplantingsPlan() {
+    this.plannenService.savePlan(this.onderhandenPlan).subscribe(
+      onderhandenPlan => {
+        this.onderhandenPlan = onderhandenPlan;
+      });
+  }
+
+  ngOnDestroy() {
     this.sub.unsubscribe();
   }
+
 }

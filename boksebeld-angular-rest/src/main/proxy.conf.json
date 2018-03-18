@@ -1,0 +1,8 @@
+{
+  "/rest": {
+    "target":"http://localhost:8080/boksebeld-angular-rest-1.0.0-SNAPSHOT",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

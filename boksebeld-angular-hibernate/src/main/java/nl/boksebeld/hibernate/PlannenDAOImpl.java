@@ -5,9 +5,12 @@ import java.util.List;
 import javax.ejb.Stateless;
 
 import nl.boksebeld.domein.plaats.BeplantingsPlan;
+import nl.boksebeld.domein.plaats.PlantPlaats;
 
 @Stateless
 public class PlannenDAOImpl implements PlannenDAO {
+
+	private static final Class PlantPlaats = null;
 
 	public BeplantingsPlan createBeplantingsPlan(String naam) {
 		final BeplantingsPlan beplantingsPlan = new BeplantingsPlan();
@@ -40,4 +43,14 @@ public class PlannenDAOImpl implements PlannenDAO {
 		HibernateUtil.delete(beplantingsPlan);
 
 	}
+
+	public void deletePlantPlaats(PlantPlaats plantPlaats) {
+		HibernateUtil.delete(plantPlaats);
+	}
+
+	@Override
+	public PlantPlaats getPlantPlaats(int id) {
+		return (PlantPlaats) HibernateUtil.get(PlantPlaats.class, id);
+	}
+
 }

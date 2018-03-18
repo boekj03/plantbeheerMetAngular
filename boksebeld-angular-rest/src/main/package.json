@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "startWithRest" : "ng serve --proxy-config proxy.conf.json -- progress false",
     "build": "ng build",
     "buildProd": "ng build --dev --base-href ./ progress false",
     "test": "ng test",

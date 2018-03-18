@@ -17,52 +17,36 @@ import {
 export class PlantenComponent implements OnInit {
 
   plantLijstContainer: PlantLijstContainer;
-  plantLijst: Plant[] = new Array();
   teTonenPlantLijst: Plant[] = new Array();
-
 
   keuzekleuren: SelectItem[] = kleurenConstantsFilter;
   hoogteLijst: SelectItem[] = hoogteConstantsFiltering;
   bladhoudendLijst: SelectItem[] = bladhoudendConstantsFilter;
 
-  filterPlant: Plant = new Plant();
-
-  selectedPlant: Plant;
-  displayDialog: boolean;
-
-  constructor(private plantenService: PlantenService) { }
+  constructor(private plantenService: PlantenService) {console.log('CCCCCCC')}
 
   ngOnInit() {
+    console.log('WWWWWWW')
+    this.getPlanten();
+  }
 
+
+  private getPlanten() {
     this.plantenService.getPlantenContainer().subscribe(
-      plantLijstContainer => {this.plantLijstContainer = plantLijstContainer;
-      this.teTonenPlantLijst = this.plantLijstContainer.plantLijst;
+      plantArray => {
+        this.teTonenPlantLijst = plantArray;
       });
   }
-  selectPlant(plant: Plant) {
-    this.selectedPlant = plant;
-    this.displayDialog = true;
-  }
-  onDialogHide() {
-    this.selectedPlant = null;
-  }
 
-  filerResult(event){
-    if (this.filterPlant.kleur) {
-      this.teTonenPlantLijst = new Array();
-
-      for (var i = 0; i < this.plantLijst.length; i++) {
-
-        let huidigePlant: Plant = this.plantLijst[i];
-        if (huidigePlant.kleur === this.filterPlant.kleur) {
-          this.teTonenPlantLijst.push(huidigePlant);
-        }
-      }
-    }
+  deletePlant(plant: Plant) {
+    this.plantenService.deletePlant(plant).subscribe(
+      deletplant => this.getPlanten()
+    );
   }
 
-  clearFilterResult(event){
-    this.filterPlant= new Plant();
-    this.teTonenPlantLijst =this.plantLijst;
+  copyPlant(plant: Plant) {
+    this.plantenService.copyPlant(plant).subscribe(
+      copyplant => this.getPlanten()
+    );
   }
 }
