@@ -16,7 +16,11 @@ export class UploadService {
 
   uploadFotoFile(file: File, id: number) {
     console.log('file is : ' + file);
-     const formData: FormData = new FormData();
+
+    // const  headers =  {headers: new  Headers({ 'Content-Type': 'application/x-www-form-urlencoded'})};
+
+
+    const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('id', id);
 

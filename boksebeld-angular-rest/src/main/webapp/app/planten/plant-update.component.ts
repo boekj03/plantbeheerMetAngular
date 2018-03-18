@@ -29,7 +29,9 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
   plantsoortLijst: SelectItem[] = plantsoortConstants;
 
   img: string;
-  imgageFile: any;
+  imgageFile: string;
+  imgageNaam: string;
+  imgageType: string;
   msgs: Message[];
 
   uploadedFiles: any[] = [];
@@ -83,18 +85,22 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
   }
 
   myUploader(event) {
-    console.log('in de onUpload');
+    console.log('in de onUpload' + this.imgageFile);
     const file: File = event.files[0];
 
 
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.imgageFile = myReader.result;
+      this.imgageNaam = file.name;
+      this.imgageType = file.type;
+      this.imgageFile = myReader.result.split(',')[1];
     }
     myReader.readAsDataURL(file);
-    this.uploadService.uploadFotoFile(file, this.onderhandePlant.id).subscribe();
 
+    console.log('voor' + this.imgageFile);
+    this.uploadService.uploadFotoFile(file, this.onderhandePlant.id).subscribe();
+    console.log('na' + this.imgageFile);
    // this.uploadService.uploadFotoAsString(file, this.onderhandePlant.id).subscribe(   );
   }
 
