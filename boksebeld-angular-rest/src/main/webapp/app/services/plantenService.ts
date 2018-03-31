@@ -32,12 +32,6 @@ export class PlantenService {
       .map(this.extractPlant);
   }
 
-  private extractPlant(response: Response) {
-
-    let plant: Plant;
-    plant = PlantenMapper.getPlant(response);
-    return plant;
-  }
 
 
   getGezochtePlanten(plantZoekItem: PlantZoekItem ): Plant[] {
@@ -49,13 +43,21 @@ export class PlantenService {
 
 
 
-  updatePlant(onderhandePlant: Plant) {
+  updatePlant(onderhandePlant: Plant): Observable<Plant> {
     const plant = JSON.stringify(onderhandePlant);
     const formdata: FormData = new FormData();
     formdata.append('plant' , plant);
    return this.http.put(this.url, formdata,
-      {headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')});
+      {headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')})
+     .map(this.extractPlant);
   }
+
+  private extractPlant(response: Response) {
+    let plant: Plant;
+    plant = PlantenMapper.getPlant(response);
+    return plant;
+  }
+
 
   saveNewPlant(onderhandePlant: Plant): Observable<Plant>  {
     const plant = JSON.stringify(onderhandePlant);
@@ -84,8 +86,7 @@ export class PlantenService {
     console.log(file);
 
     file = file.replace(/^data:image\/png;base64,/, '');
-    //file = file.split(',')[0].split(':')[1].split(';')[0];
-    const formData: FormData = new FormData();
+   const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('id', id);
     return this.http.post(this.url + '/jersey' ,      formData,

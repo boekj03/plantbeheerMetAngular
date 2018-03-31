@@ -28,11 +28,10 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
   bloeitijdLijst: SelectItem[] = bloeitijdConstants;
   plantsoortLijst: SelectItem[] = plantsoortConstants;
 
-  img: string;
-  imgageFile: string;
-  imgageNaam: string;
-  imgageType: string;
-  msgs: Message[];
+
+  oldImage: string;
+  newImage: string;
+
 
   uploadedFiles: any[] = [];
 
@@ -57,8 +56,8 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
       this.plantenService.getplant(this.id).subscribe(
       onderhandePlant => {
         this.onderhandePlant = onderhandePlant;
-        console.log('DDDDIT IS HET ID NA bij get onderhande plant ', this.id);
-      });
+        this.oldImage = onderhandePlant.base64Image;
+       });
 
 
 
@@ -68,40 +67,43 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
 
   updatePlant() {
     if (this.id) {
+      this.onderhandePlant.base64Image = this.oldImage;
       this.plantenService.updatePlant(this.onderhandePlant).subscribe(
-        update => {
+        updatedPlant => {
           this.getOnderhandenPlant();
-          this.router.navigate(['/catalogus']);
         }
       );
     } else {
       this.plantenService.saveNewPlant(this.onderhandePlant).subscribe(
          onderhandePlant => {
             this.onderhandePlant = onderhandePlant;
-           this.router.navigate(['/catalogus']);
+          // this.router.navigate(['/catalogus']);
          });
     }
 
   }
 
+  logFoto() {
+    console.log('oude foto' + this.oldImage);
+    console.log('nieuwe foto' + this.newImage);
+  }
+
+
+
   myUploader(event) {
-    console.log('in de onUpload' + this.imgageFile);
     const file: File = event.files[0];
 
 
     const myReader: FileReader = new FileReader();
-
     myReader.onloadend = (e) => {
-      this.imgageNaam = file.name;
-      this.imgageType = file.type;
-      this.imgageFile = myReader.result.split(',')[1];
+      this.oldImage = myReader.result.split(',')[1];
     }
     myReader.readAsDataURL(file);
-
-    console.log('voor' + this.imgageFile);
-    this.uploadService.uploadFotoFile(file, this.onderhandePlant.id).subscribe();
-    console.log('na' + this.imgageFile);
-   // this.uploadService.uploadFotoAsString(file, this.onderhandePlant.id).subscribe(   );
+    this.uploadService.uploadFotoFile(this.oldImage, this.onderhandePlant.id).subscribe(
+      plant => {
+        this.newImage = plant.base64Image;
+          //this.oldImage = plant.base64Image;
+      });
   }
 
 
