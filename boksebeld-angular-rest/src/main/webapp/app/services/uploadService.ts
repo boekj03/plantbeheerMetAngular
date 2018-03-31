@@ -16,11 +16,7 @@ export class UploadService {
 
 
   uploadFotoFile(image: string, id: number): Observable<Plant> {
-    console.log('file die verstuurd wordt bij upload is : ' + image);
-
-    // const  headers =  {headers: new  Headers({ 'Content-Type': 'application/x-www-form-urlencoded'})};
-
-    image = 'BEGIN_ID' + id + 'BEGINGIMAGEFILE' + image + 'EINDIMAGEFILE';
+     image = 'BEGIN_ID' + id + 'BEGINGIMAGEFILE' + image + 'EINDIMAGEFILE';
 
     const formData: FormData = new FormData();
     formData.append('image', image);

@@ -83,9 +83,11 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
 
   }
 
-  logFoto() {
-    console.log('oude foto' + this.oldImage);
-    console.log('nieuwe foto' + this.newImage);
+  bewaarFoto() {
+    this.uploadService.uploadFotoFile(this.newImage, this.onderhandePlant.id).subscribe(
+      plant => {
+        this.oldImage = plant.base64Image;
+      });
   }
 
 
@@ -96,14 +98,11 @@ export class PlantUpdateComponent implements OnInit, OnDestroy{
 
     const myReader: FileReader = new FileReader();
     myReader.onloadend = (e) => {
-      this.oldImage = myReader.result.split(',')[1];
+      this.newImage = myReader.result.split(',')[1];
+
     }
     myReader.readAsDataURL(file);
-    this.uploadService.uploadFotoFile(this.oldImage, this.onderhandePlant.id).subscribe(
-      plant => {
-        this.newImage = plant.base64Image;
-          //this.oldImage = plant.base64Image;
-      });
+
   }
 
 

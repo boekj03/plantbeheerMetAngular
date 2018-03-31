@@ -22,7 +22,9 @@ public class ImageResource {
 	private static final String EINDIMAGEFILE = "EINDIMAGEFILE";
 	private static final String BEGINGIMAGEFILE = "BEGINGIMAGEFILE";
 	private static final String BEGIN_ID = "BEGIN_ID";
-	private static String test = "XXXBEGIN_ID66BEGINGIMAGEFILEimageEINDIMAGEFILE";
+	private static String test = "XXXBEGIN_ID66BEGINGIMAGEFILEimage==EINDIMAGEFILE";
+
+	private static String testje = "/9j/4AAQSkZJRgABAQEA2ADYAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/mESTsjxCleGXfqf/2Q==";
 	@Inject
 	private PlantenService plantenService;
 	private static Base64 CODEC = new Base64();
@@ -32,24 +34,25 @@ public class ImageResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Plant uploadFile(@FormDataParam("image") String image) throws IOException, ServletException {
 
-		// ObjectMapper mapper = new ObjectMapper();
-		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-		// false);
-		// Plant plant = mapper.readValue(plantString, Plant.class);
-
 		String imageString = getImageString(image);
-		System.out.println("Image die aankomt op de service: " + imageString);
-		System.out.println("Id die aankomt op de service: " + getId(image));
+		int id = getId(image);
 
-		Plant retVal = new Plant();
-		retVal.setBase64Image(imageString);
-		return retVal;
+		Plant orgineel = plantenService.getPlant(id);
+
+		byte[] decodeBase64 = Base64.decodeBase64(imageString);
+		orgineel.setImage(decodeBase64);
+		plantenService.updatePlant(orgineel);
+
+		Plant aangepast = plantenService.getPlant(id);
+		aangepast.setBase64Image(CODEC.encodeBase64String(aangepast.getImage()));
+		return aangepast;
 
 	}
 
-	private String getId(String invoer) {
+	private int getId(String invoer) {
 		String substring = invoer.substring(invoer.indexOf(BEGIN_ID) + 8, invoer.indexOf(BEGINGIMAGEFILE));
-		return substring;
+		Integer.valueOf(substring);
+		return Integer.valueOf(substring);
 	}
 
 	private String getImageString(String invoer) {
@@ -58,11 +61,12 @@ public class ImageResource {
 		return substring;
 	}
 
-	// public static void main(String[] args) {
-	// ImageResource imageResource = new ImageResource();
-	// imageResource.getId(test);
-	// imageResource.getImageString(test);
-	//
-	// }
+	public static void main(String[] args) {
+		ImageResource imageResource = new ImageResource();
+		byte[] decodeBase64 = CODEC.decodeBase64(testje);
+		String conversie = CODEC.encodeBase64String(decodeBase64);
+
+		System.out.println(conversie.equalsIgnoreCase(testje));
+	}
 
 }

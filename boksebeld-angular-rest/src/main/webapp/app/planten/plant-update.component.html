@@ -124,7 +124,6 @@
     <div class="ui-inputgroup">
 
         <img class="plantenfoto" src="data:image/png;base64,{{oldImage}}">
-        <img class="plantenfoto" src="data:image/png;base64,{{newImage}}">
 
      </div>
   </div>
@@ -133,14 +132,14 @@
   <div class="ui-g-12 ui-md-1"> <a routerLink="/catalogus"><button pButton type="button" class="ui-button-info" label="cancel"></button></a></div>
   <div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="update" (click)="updatePlant()"></button></div>
 
-  <div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="printFotoButton" (click)="logFoto()"></button></div>
+
   <div class="ui-g-12 ui-md-2"></div>
 </div>
 
 <h3>Kies een nieuwe fotootje</h3>
 <!--<p-fileUpload name="file" url="./rest/image/upload"></p-fileUpload>-->
-<p-fileUpload mode="advanced" chooseLabel="Kies foto" cancelLabel="Annuleer" name="myfile[]" maxFileSize="40000" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
-
+<p-fileUpload mode="advanced" chooseLabel="Kies foto" cancelLabel="Annuleer" name="myfile[]" maxFileSize="40000" customUpload="true" (uploadHandler)="myUploader($event)" auto="true" ></p-fileUpload>
+<div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="bewaarFoto" (click)="bewaarFoto()" auto></button></div>
 
 
 
