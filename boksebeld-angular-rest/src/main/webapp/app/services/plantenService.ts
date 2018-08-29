@@ -77,9 +77,8 @@ export class PlantenService {
  }
 
   copyPlant(onderhandePlant: Plant) {
-
-    return this.http.post(this.url + '/copyplant',
-      onderhandePlant, {headers: new HttpHeaders().set('Content-Type', 'application/json')});
+    const id =  '' + onderhandePlant.id;
+    return this.http.get( this.url + '/copyplant/' + id);
   }
 
   uploadFoto(file: String, id: number) {

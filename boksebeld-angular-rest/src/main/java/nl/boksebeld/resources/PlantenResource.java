@@ -26,10 +26,10 @@ import nl.boksebeld.domein.plant.Plant;
 import nl.boksebeld.domein.service.PlantenService;
 
 /**
- * 
+ *
  * @author hanst
  *
- * 
+ *
  */
 @Path("/rest/planten")
 public class PlantenResource {
@@ -102,11 +102,11 @@ public class PlantenResource {
 		plantenService.deletePlant(orgineel);
 	}
 
-	@POST
-	@Path("/copyplant")
+	@GET
+	@Path("/copyplant/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void copyplant(Plant plant) throws IllegalStateException, IOException {
-		Plant orginelePlant = plantenService.getPlant(plant.getId());
+	public void copyplant(@PathParam("id") String id) throws IllegalStateException, IOException {
+		Plant orginelePlant = plantenService.getPlant((Integer.valueOf(id)));
 		Plant copyPlant = orginelePlant.createCopy();
 		plantenService.savePlant(copyPlant);
 	}

@@ -11,12 +11,6 @@
 <p-dataTable [value]="teTonenPlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
   <p-column field="botanischeNaam" header="Naam" sortable="true" [filter]="true"  ></p-column>
 
-  <!--<p-column field="b" header="bloeitijd" >-->
-    <!--<ng-template let-col let-plant="rowData" pTemplate="body">-->
-      <!--{{plant.bloeiTijdString()}}-->
-    <!--</ng-template>-->
-  <!--</p-column>-->
-
   <p-column field="hoogte" header="Hoogte" [filter]="true" filterMatchMode="equals">
      <ng-template let-col let-plant="rowData" pTemplate="body">
       <p-dropdown [options]="hoogteLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.hoogte" [readonly]="true" [filter]="true"></p-dropdown>
@@ -58,9 +52,9 @@
   <p-column  header="Acties" >
     <ng-template let-col let-plant="rowData" pTemplate="body">
 
-      <button pButton type="button" icon="fa-close" iconPos="right" (click)="deletePlant(plant)" class="ui-button-danger"></button>
-      <button pButton type="button" icon="fa-cc" iconPos="center" (click)="copyPlant(plant)" class="ui-button-info"></button>
-      <a [routerLink]="['/plant', plant.id]"><button pButton type="button" icon="fa-pencil-square-o" iconPos="center" class="ui-button-success"></button></a>
+      <button pButton type="button" icon="fa-close" iconPos="right" (click)="deletePlant(plant)" class="ui-button-danger" title="verwijder"></button>
+      <button pButton type="button" icon="fa-cc" iconPos="center" (click)="copyPlant(plant)" class="ui-button-info" title="kopieer"></button>
+      <a [routerLink]="['/plant', plant.id]"><button pButton type="button" icon="fa-pencil-square-o" iconPos="center" class="ui-button-success" title="bewerk/bekijk"></button></a>
 
 
     </ng-template>

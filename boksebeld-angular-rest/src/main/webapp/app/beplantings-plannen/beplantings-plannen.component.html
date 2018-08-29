@@ -19,10 +19,10 @@
   <p-column  header="Acties" >
     <ng-template let-col let-plan="rowData" pTemplate="body">
 
-      <button pButton type="button" icon="fa-close" iconPos="right" (click)="deletePlan(plan)" class="ui-button-danger"></button>
-      <button pButton type="button" icon="fa-cc" iconPos="center" (click)="copyPlan(plan)" class="ui-button-info"></button>
-      <a [routerLink]="['/beplantingsplan', plan.id]"><button pButton type="button" icon="fa-pencil-square-o" iconPos="center" class="ui-button-success"></button></a>
-      <button pButton type="button" icon="fa-file" iconPos="center" (click)="excelPlan(plan)" class="ui-button-info"></button>
+      <button pButton type="button" icon="fa-close" iconPos="right" (click)="deletePlan(plan)" class="ui-button-danger" title="verwijder"></button>
+      <button pButton type="button" icon="fa-cc" iconPos="center" (click)="copyPlan(plan)" class="ui-button-info" title="kopieer"></button>
+      <a [routerLink]="['/beplantingsplan', plan.id]"><button pButton type="button" icon="fa-pencil-square-o" iconPos="center" class="ui-button-success" title="bewerk/bekijk" ></button></a>
+      <button pButton type="button" icon="fa-file" iconPos="center" (click)="excelPlan(plan)" class="ui-button-info" title="excel"></button>
 
     </ng-template>
   </p-column>
