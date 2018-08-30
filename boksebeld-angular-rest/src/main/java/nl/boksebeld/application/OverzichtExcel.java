@@ -33,26 +33,28 @@ public class OverzichtExcel {
 
 	private static Integer KOLNAAM = 0;
 	private static Integer KOLBOTANISCHE_NAAM = 1;
-	private static Integer BLOEITIJD_NAAM = 2;
-	private static Integer KOLM2 = 3;
-	private static Integer KOLSTUKM2 = 4;
-	private static Integer KOLAANTAL = 5;
-	private static Integer KOLINKOOPPRIJS = 6;
-	private static Integer KOLMARGE = 7;
-	private static Integer KOLVERKOOPPRIJS = 8;
-	private static Integer KOLTOTAAL = 9;
+	private static Integer KOLNEDERLANDSE_NAAM = 2;
+	private static Integer BLOEITIJD_NAAM = 3;
+	private static Integer KOLM2 = 4;
+	private static Integer KOLSTUKM2 = 5;
+	private static Integer KOLAANTAL = 6;
+	private static Integer KOLINKOOPPRIJS = 7;
+	private static Integer KOLMARGE = 8;
+	private static Integer KOLVERKOOPPRIJS = 9;
+	private static Integer KOLTOTAAL = 10;
 
-	private static Integer KOLLEVERANCIER = 10;
-	private static Integer KOLMAAT = 11;
+	private static Integer KOLLEVERANCIER = 11;
+	private static Integer KOLMAAT = 12;
 
-	private static Integer KOLBESCHRIJVING = 12;
-	private static Integer KOLFOTO = 13;
+	private static Integer KOLBESCHRIJVING = 13;
+	private static Integer KOLFOTO = 14;
 
 	private static Integer ROW1 = 0;
 
 	static {
 		KOLOMBREEDTELIJST.put(KOLNAAM, Integer.valueOf(1600));
 		KOLOMBREEDTELIJST.put(KOLBOTANISCHE_NAAM, Integer.valueOf(5760));
+		KOLOMBREEDTELIJST.put(KOLNEDERLANDSE_NAAM, Integer.valueOf(5760));
 		KOLOMBREEDTELIJST.put(BLOEITIJD_NAAM, Integer.valueOf(3160));
 		KOLOMBREEDTELIJST.put(KOLM2, Integer.valueOf(1600));
 		KOLOMBREEDTELIJST.put(KOLSTUKM2, Integer.valueOf(3200));
@@ -72,6 +74,7 @@ public class OverzichtExcel {
 
 		KOPTEKSTEN_LIJST.put(KOLNAAM, "Plaats");
 		KOPTEKSTEN_LIJST.put(KOLBOTANISCHE_NAAM, "Botanische naam");
+		KOPTEKSTEN_LIJST.put(KOLNEDERLANDSE_NAAM, "Nederlandse naam");
 		KOPTEKSTEN_LIJST.put(BLOEITIJD_NAAM, "Bloeitijd");
 		KOPTEKSTEN_LIJST.put(KOLM2, "M2");
 		KOPTEKSTEN_LIJST.put(KOLSTUKM2, "Stuk per m2");
@@ -131,6 +134,8 @@ public class OverzichtExcel {
 
 		createKolnaam(plantPlaats, row);
 		createBotanischeNaam(row, plant);
+		createNederlandseNaam(row, plant);
+
 		createBloeitijd(row, plant);
 		createM2(plantPlaats, row);
 		createStukM2(row);
@@ -278,6 +283,14 @@ public class OverzichtExcel {
 		Cell cell = row.createCell(KOLBOTANISCHE_NAAM);
 		cell.setCellStyle(bovenuitlijnenStyle);
 		cell.setCellValue(plant.getBotanischeNaam());
+	}
+
+	private void createNederlandseNaam(Row row, Plant plant) {
+		XSSFCellStyle bovenuitlijnenStyle = bovenuitlijnen(row);
+		Cell cell = row.createCell(KOLNEDERLANDSE_NAAM);
+		cell.setCellStyle(bovenuitlijnenStyle);
+		cell.setCellValue(plant.getNederlandseNaam());
+
 	}
 
 	private void createKolnaam(PlantPlaats plantPlaats, Row row) {
