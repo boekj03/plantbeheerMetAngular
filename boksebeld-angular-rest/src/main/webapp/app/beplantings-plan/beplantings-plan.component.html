@@ -8,7 +8,7 @@
       <button pButton type="button" label="Save"  (click)="saveBeplantingsPlan()" class="ui-button-success"></button>
     </div>
   <div class="ui-g-12 ui-md-1">
-    <a routerLink="/plannen"><button pButton type="button" label="terug"   class="ui-button-success"></button></a>
+    <a routerLink="/plannen"><button pButton type="button" label="Cancel"   class="ui-button-success"></button></a>
   </div>
 
   <div class="ui-g-12 ui-md-8"></div>
@@ -26,17 +26,17 @@
     </ng-template>
   </p-column>
 
-  <p-column field="b" header="Meters"  [style]="{'width':'200px'}">
-    <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
-      <input type="number"  [(ngModel)]="plantPlaats.vierkanteMeters" size="1"/>
-    </ng-template>
-  </p-column>
+  <!--<p-column field="b" header="Meters"  [style]="{'width':'200px'}">-->
+    <!--<ng-template let-col let-plantPlaats="rowData" pTemplate="body">-->
+      <!--<input type="number"  [(ngModel)]="plantPlaats.vierkanteMeters" size="1"/>-->
+    <!--</ng-template>-->
+  <!--</p-column>-->
 
   <!--<p-column field="naam" header="Naam"  [style]="{'width':'100px'}" [filter]="true"></p-column>-->
   <p-column field="plant.botanischeNaam" sortable="true" header="Botanische Naam" ></p-column>
 
   <p-column field="plant.nederlandseNaam" sortable="true" header="Nederlandse Naam" ></p-column>
-
+  <p-column field="plant.bloeitijdString" header="bloeitijd" [filter]="true"  filterMatchMode="contains"></p-column>
   <p-column field="plant.kleur" header="Kleur" sortable="true" [filter]="true" filterMatchMode="equals">
     <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
       <p-dropdown [readonly]="true" [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plantPlaats.plant.kleur" [filter]="true" ></p-dropdown>
@@ -56,7 +56,7 @@
   <p-column  header="Acties" [style]="{'width':'100px'}">
     <ng-template let-col let-plantPlaats="rowData" pTemplate="body">
 
-      <button pButton type="button" icon="fa-plus" iconPos="right" (click)="verwijderPlantplaats(plantPlaats)" class="ui-button-danger"></button>
+      <button pButton type="button" icon="fa-close" iconPos="right" (click)="verwijderPlantplaats(plantPlaats)" class="ui-button-danger"></button>
 
     </ng-template>
   </p-column>
@@ -76,7 +76,7 @@
   <p-column field="botanischeNaam" sortable="true" header="Botanische Naam" [filter]="true"  ></p-column>
 
   <p-column field="nederlandseNaam" sortable="true" header="Nederlandse Naam" [filter]="true"  ></p-column>
-
+  <p-column field="bloeitijdString" header="bloeitijd" [filter]="true"  filterMatchMode="contains"></p-column>
   <p-column field="kleur" header="Kleur" sortable="true" [filter]="true" filterMatchMode="equals">
     <ng-template let-col let-plant="rowData" pTemplate="body">
       <p-dropdown [readonly]="true" [options]="keuzekleuren" [style]="{'width':'100%'}" [(ngModel)]="plant.kleur" [filter]="true" ></p-dropdown>

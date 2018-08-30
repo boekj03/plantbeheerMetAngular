@@ -107,13 +107,6 @@
       <p-multiSelect  [options]="bloeitijdLijst" [(ngModel)]="onderhandePlant.bloeitijdLijst"></p-multiSelect>
     </div>
   </div>
-  <div class="ui-g-12 ui-md-1">bloeitijd: </div>
-  <div class="ui-g-12 ui-md-2">
-    <div class="ui-inputgroup">
-      <p-dropdown [options]="bloeitijdLijst" [(ngModel)]="onderhandePlant.bloeitijdLijst" filter="filter"></p-dropdown>
-    </div>
-  </div>
-
 </div>
 
 
@@ -136,10 +129,10 @@
   <div class="ui-g-12 ui-md-2"></div>
 </div>
 
-<h3>Kies een nieuwe fotootje</h3>
+
 <!--<p-fileUpload name="file" url="./rest/image/upload"></p-fileUpload>-->
 <p-fileUpload mode="advanced" chooseLabel="Kies foto" cancelLabel="Annuleer" name="myfile[]" maxFileSize="40000" customUpload="true" (uploadHandler)="myUploader($event)" auto="true" ></p-fileUpload>
-<div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="bewaarFoto" (click)="bewaarFoto()" auto></button></div>
+<div class="ui-g-12 ui-md-1">  <button pButton type="button" class="ui-button-info" label="Bewaar foto" (click)="bewaarFoto()" auto></button></div>
 
 
 

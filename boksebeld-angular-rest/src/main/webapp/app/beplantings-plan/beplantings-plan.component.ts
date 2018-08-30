@@ -8,6 +8,7 @@ import {PlantPlaats} from "app/model/plantPlaats";
 import {SelectItem} from 'primeng/components/common/selectitem';
 import {bladhoudendConstantsFilter, hoogteConstantsFiltering, kleurenConstantsFilter} from '../model/enumConstants';
 import {PlantenService} from '../services/plantenService';
+import {PlantenMapper} from '../model/plantenMapper';
 
 @Component({
   selector: 'app-beplantings-plan',
@@ -59,7 +60,7 @@ export class BeplantingsPlanComponent implements OnInit, OnDestroy {
   private getPlanten() {
     this.plantenService.getPlantenContainer().subscribe(
       allePlantLijst => {
-        this.allePlantLijst = allePlantLijst;
+        this.allePlantLijst = PlantenMapper.getPlantenLijst(allePlantLijst);
       });
   }
 
