@@ -10,7 +10,7 @@ export class PlantenMapper {
     const plantlijst: Plant[] = new Array();
 
 
-    const anyArray: any[] =  jsonObject.plantLijst;
+    const anyArray: any[] = jsonObject;
 
    for (const item of anyArray) {
       const plant = this.mapPlantDtoToPlant(item);
@@ -43,7 +43,22 @@ export class PlantenMapper {
     plant.base64Image = item.base64Image;
     plant.image = item.image;
 
+      for (let i = 0; i < plant.bloeitijdLijst.length; i++) {
+        if ( plant.bloeitijdLijst[i] === 'maart') {
+          PlantenMapper.voegBloeitijdToe(plant, 'mrt' + ' ');
+       } else {
+          PlantenMapper.voegBloeitijdToe(plant,  plant.bloeitijdLijst[i].substr(0, 3) + ' ');
+        }
+      }
     return plant;
+  }
+
+  private static voegBloeitijdToe(plant: Plant, afkortingMaand: string) {
+      if (plant.bloeitijdString) {
+        plant.bloeitijdString = plant.bloeitijdString + afkortingMaand;
+      } else {
+        plant.bloeitijdString =  afkortingMaand;
+      }
   }
 
   static getPlant(jsonObject: any): Plant {

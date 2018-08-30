@@ -4,9 +4,10 @@ import {Plant, PlantLijstContainer} from '../model/plant';
 
 import {SelectItem} from "primeng/components/common/selectitem";
 import {
-  bladhoudendConstants, bladhoudendConstantsFilter, bloeitijdConstants, hoogteConstants, hoogteConstantsFiltering,
+  bladhoudendConstants, bladhoudendConstantsFilter, bloeitijdConstants, bloeitijdConstantsFilter, hoogteConstants, hoogteConstantsFiltering,
   kleurenConstants, kleurenConstantsFilter
 } from '../model/enumConstants';
+import {PlantenMapper} from '../model/plantenMapper';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class PlantenComponent implements OnInit {
   keuzekleuren: SelectItem[] = kleurenConstantsFilter;
   hoogteLijst: SelectItem[] = hoogteConstantsFiltering;
   bladhoudendLijst: SelectItem[] = bladhoudendConstantsFilter;
+  bloeitijdLijst: SelectItem[] = bloeitijdConstantsFilter;
 
   constructor(private plantenService: PlantenService) {console.log('CCCCCCC')}
 
@@ -34,7 +36,7 @@ export class PlantenComponent implements OnInit {
   private getPlanten() {
     this.plantenService.getPlantenContainer().subscribe(
       plantArray => {
-        this.teTonenPlantLijst = plantArray;
+        this.teTonenPlantLijst = PlantenMapper.getPlantenLijst(plantArray);
       });
   }
 

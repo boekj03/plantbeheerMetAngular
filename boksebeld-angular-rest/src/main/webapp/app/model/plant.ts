@@ -13,6 +13,7 @@ export class Plant {
     hoogte: string;
     bladhoudend: string;
     bloeitijdLijst:  string[] = new Array();
+    bloeitijdString: string;
     grondsoort: string;
     kleur: string;
     plantsoort: string;
@@ -21,17 +22,7 @@ export class Plant {
     base64Image: string;
     newbase64Image: string;
 
-    bloeiTijdString(): string{
-      let retVal: string = '';
-      for (var i = 0; i < this.bloeitijdLijst.length; i++) {
-        if(this.bloeitijdLijst[i] === 'maart'){
-          retVal = retVal + 'mrt' + ' ';
-        } else {
-          retVal = retVal + this.bloeitijdLijst[i].substr(0, 3) + ' ';
-        }
-      }
-      return retVal;
-    }
+
 }
 
 export class PlantLijstContainer {

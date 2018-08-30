@@ -78,6 +78,21 @@ export const bloeitijdConstants =  [
   {label: 'december', value: 'DECEMBER'}
 ];
 
+export const bloeitijdConstantsFilter =  [
+  {label: 'januari', value: 'JANUARI'},
+  {label: 'februari', value: 'FEBRUARI'},
+  {label: 'maart', value: 'MAART'},
+  {label: 'april', value: 'APRIL'},
+  {label: 'mei', value: 'MEI'},
+  {label: 'juni', value: 'JUNI'},
+  {label: 'juli', value: 'JULI'},
+  {label: 'augustus', value: 'AUGUSTUS'},
+  {label: 'september', value: 'SEPTEMBER'},
+  {label: 'oktober', value: 'OKTOBER'},
+  {label: 'november', value: 'NOVEMBER'},
+  {label: 'december', value: 'DECEMBER'}
+];
+
 export const plantsoortConstants =  [
   {label: 'Heester', value: 'HEESTER'},
   {label: 'Vaste plant', value: 'VASTEPLANT'},

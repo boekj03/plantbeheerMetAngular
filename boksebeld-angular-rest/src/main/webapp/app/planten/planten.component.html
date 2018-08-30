@@ -21,6 +21,10 @@
     </ng-template>
   </p-column>
 
+
+  <p-column field="bloeitijdString" header="bloeitijd" [filter]="true"  filterMatchMode="contains"></p-column>
+  
+
   <p-column field="bladhoudend" header="Bladerdracht" [filter]="true" filterMatchMode="equals">
     <ng-template let-col let-plant="rowData" pTemplate="body">
       <p-dropdown [options]="bladhoudendLijst" [style]="{'width':'100%'}" [(ngModel)]="plant.bladhoudend" [readonly]="true" [filter]="true"></p-dropdown>
