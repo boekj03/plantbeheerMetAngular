@@ -90,12 +90,12 @@ public class OverzichtExcel {
 		KOPTEKSTEN_LIJST.put(KOLBESCHRIJVING, "Beschrijving");
 		KOPTEKSTEN_LIJST.put(KOLFOTO, "Foto");
 
-		KOLOM_LETTERS.put(KOLM2, "D");
-		KOLOM_LETTERS.put(KOLSTUKM2, "E");
-		KOLOM_LETTERS.put(KOLAANTAL, "F");
-		KOLOM_LETTERS.put(KOLINKOOPPRIJS, "G");
-		KOLOM_LETTERS.put(KOLMARGE, "H");
-		KOLOM_LETTERS.put(KOLVERKOOPPRIJS, "I");
+		KOLOM_LETTERS.put(KOLM2, "E");
+		KOLOM_LETTERS.put(KOLSTUKM2, "F");
+		KOLOM_LETTERS.put(KOLAANTAL, "G");
+		KOLOM_LETTERS.put(KOLINKOOPPRIJS, "H");
+		KOLOM_LETTERS.put(KOLMARGE, "I");
+		KOLOM_LETTERS.put(KOLVERKOOPPRIJS, "J");
 	}
 
 	public void createOverzichtSheet(BeplantingsPlan plan, Sheet sheet) {

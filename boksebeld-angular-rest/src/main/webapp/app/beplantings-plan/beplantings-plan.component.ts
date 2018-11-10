@@ -6,7 +6,10 @@ import {BeplantingsPlan} from "../model/beplantingsPlan";
 import {Plant} from "app/model/plant";
 import {PlantPlaats} from "app/model/plantPlaats";
 import {SelectItem} from 'primeng/components/common/selectitem';
-import {bladhoudendConstantsFilter, hoogteConstantsFiltering, kleurenConstantsFilter} from '../model/enumConstants';
+import {
+  bladhoudendConstantsFilter, grondsoortConstants, grondsoortFiltering, hoogteConstantsFiltering, kleurenConstantsFilter,
+  plantsoortConstants, plantsoortFiltering
+} from '../model/enumConstants';
 import {PlantenService} from '../services/plantenService';
 import {PlantenMapper} from '../model/plantenMapper';
 
@@ -17,17 +20,64 @@ import {PlantenMapper} from '../model/plantenMapper';
 })
 export class BeplantingsPlanComponent implements OnInit, OnDestroy {
 
+
+
   private sub: Subscription;
   id: string;
   onderhandenPlan: BeplantingsPlan;
   allePlantLijst: Plant[] = new Array();
+  teTonenPlantLijst: Plant[] = new Array();
   keuzekleuren: SelectItem[] = kleurenConstantsFilter;
   hoogteLijst: SelectItem[] = hoogteConstantsFiltering;
   bladhoudendLijst: SelectItem[] = bladhoudendConstantsFilter;
+  plantsoortLijst: SelectItem[] = plantsoortFiltering;
+  grondsoortLijst: SelectItem[] = grondsoortFiltering;
 
   toevoegswitch: boolean;
+
+  private _beschrijvingSearch: string;
+  private _plantsoortSearch: string;
+  private _grondsoortSearch: string;
+
+
   constructor(private route: ActivatedRoute, private plannenService: PlannenService, private plantenService: PlantenService ) { }
 
+  get plantsoortSearch(): string {
+    return this._plantsoortSearch;
+  }
+
+  set plantsoortSearch(value: string) {
+    this._plantsoortSearch = value;
+    this.filter();  }
+
+  get beschrijvingSearch() {
+    return this._beschrijvingSearch;
+  }
+
+  set beschrijvingSearch(value) {
+    this._beschrijvingSearch = value;
+    this.filter();  }
+  get grondsoortSearch(): string {
+    return this._grondsoortSearch;
+  }
+
+  set grondsoortSearch(value: string) {
+    this._grondsoortSearch = value;
+    this.filter();
+  }
+
+  filter() {
+    this.teTonenPlantLijst = this.allePlantLijst;
+    if (this.plantsoortSearch) {
+      this.teTonenPlantLijst = this.teTonenPlantLijst.filter(plant => plant.plantsoort && plant.plantsoort.toLocaleLowerCase().indexOf(this._plantsoortSearch.toLocaleLowerCase()) >= 0);
+    }
+    if (this.grondsoortSearch) {
+      this.teTonenPlantLijst = this.teTonenPlantLijst.filter(plant => plant.grondsoort && plant.grondsoort.toLocaleLowerCase().indexOf(this._grondsoortSearch.toLocaleLowerCase()) >= 0);
+    }
+    if (this.beschrijvingSearch) {
+      this.teTonenPlantLijst = this.teTonenPlantLijst.filter(plant => plant.beschrijving && plant.beschrijving.toLocaleLowerCase().indexOf(this._beschrijvingSearch.toLocaleLowerCase()) >= 0);
+    }
+  }
 
   public selectplant(selectedPlant: Plant) {
     const plantPlaats: PlantPlaats = new PlantPlaats();
@@ -61,6 +111,7 @@ export class BeplantingsPlanComponent implements OnInit, OnDestroy {
     this.plantenService.getPlantenContainer().subscribe(
       allePlantLijst => {
         this.allePlantLijst = PlantenMapper.getPlantenLijst(allePlantLijst);
+        this.teTonenPlantLijst = this.allePlantLijst;
       });
   }
 

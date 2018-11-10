@@ -68,10 +68,34 @@
 
 <div *ngIf="toevoegswitch">
 
+  <div *ngIf="allePlantLijst" class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-4">
+      <div class="ui-inputgroup">
+        <span >
+          <input id="beschrijvingSearch" type="text" size="50" [(ngModel)]="beschrijvingSearch" pInputText>
+          <label>Zoek op Beschrijving</label>
+        </span>
+      </div>
+    </div>
 
 
-  <p-dataTable *ngIf="allePlantLijst" [value]="allePlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
+    <div class="ui-g-12 ui-md-4">
+      <div class="ui-inputgroup">
+        <p-dropdown [options]="plantsoortLijst"
+                    [(ngModel)]="plantsoortSearch" filter="filter"></p-dropdown>
+        <label>Zoek op plantsoort</label>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-4">
+      <div class="ui-inputgroup">
+        <p-dropdown [options]="grondsoortLijst"
+                    [(ngModel)]="grondsoortSearch" filter="filter"></p-dropdown>
+        <label>Zoek op grondsoort</label>
+      </div>
+    </div>
+  </div>
 
+  <p-dataTable *ngIf="allePlantLijst" [value]="teTonenPlantLijst" [rows]="20" [paginator]="true" [globalFilter]="gb" #dt>
 
   <p-column field="botanischeNaam" sortable="true" header="Botanische Naam" [filter]="true"  ></p-column>
 

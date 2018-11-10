@@ -40,6 +40,12 @@ export const grondsoortConstants =  [
   {label: 'Elke grondsoort', value: 'ELKEGRONDSOORT'}
 ];
 
+export const grondsoortFiltering =  [
+  {label: 'geen selectie', value: null},
+  {label: 'Droog', value: 'DROOG'},
+  {label: 'Nat', value: 'NAT'},
+  {label: 'Elke grondsoort', value: 'ELKEGRONDSOORT'}
+];
 export const hoogteConstants =  [
   {label: '5 tot 10 cm', value: 'VIJF_TIEN'},
   {label: '10 tot 30 cm', value: 'TIEN_DERTIG'},
@@ -94,6 +100,16 @@ export const bloeitijdConstantsFilter =  [
 ];
 
 export const plantsoortConstants =  [
+  {label: 'Heester', value: 'HEESTER'},
+  {label: 'Vaste plant', value: 'VASTEPLANT'},
+  {label: 'Eenjarig', value: 'EENJARIG'},
+  {label: 'Boom', value: 'BOOM'},
+  {label: 'Vijverplant', value: 'VIJVERPLANT'},
+  {label: 'Bol en Knol/gewas', value: 'BOLKNOL'},
+];
+
+export const plantsoortFiltering =  [
+  {label: 'alle plantsoorten', value: null},
   {label: 'Heester', value: 'HEESTER'},
   {label: 'Vaste plant', value: 'VASTEPLANT'},
   {label: 'Eenjarig', value: 'EENJARIG'},

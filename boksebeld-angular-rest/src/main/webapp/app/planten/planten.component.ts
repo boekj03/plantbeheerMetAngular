@@ -17,13 +17,15 @@ import {PlantenMapper} from '../model/plantenMapper';
 })
 export class PlantenComponent implements OnInit {
 
-  plantLijstContainer: PlantLijstContainer;
+
+  allePlanten: Plant[] = new Array();
   teTonenPlantLijst: Plant[] = new Array();
 
   keuzekleuren: SelectItem[] = kleurenConstantsFilter;
   hoogteLijst: SelectItem[] = hoogteConstantsFiltering;
   bladhoudendLijst: SelectItem[] = bladhoudendConstantsFilter;
   bloeitijdLijst: SelectItem[] = bloeitijdConstantsFilter;
+  private _beschrijvingSearch: string;
 
   constructor(private plantenService: PlantenService) {console.log('CCCCCCC')}
 
@@ -32,11 +34,21 @@ export class PlantenComponent implements OnInit {
     this.getPlanten();
   }
 
+  get beschrijvingSearch() {
+    return this._beschrijvingSearch;
+  }
+
+  set beschrijvingSearch(value) {
+
+    this._beschrijvingSearch = value;
+    this.teTonenPlantLijst = this.allePlanten.filter(plant => plant.beschrijving && plant.beschrijving.toLocaleLowerCase().indexOf(this._beschrijvingSearch.toLocaleLowerCase()) >= 0);
+  }
 
   private getPlanten() {
     this.plantenService.getPlantenContainer().subscribe(
       plantArray => {
-        this.teTonenPlantLijst = PlantenMapper.getPlantenLijst(plantArray);
+        this.allePlanten = PlantenMapper.getPlantenLijst(plantArray);
+        this.teTonenPlantLijst = this.allePlanten;
       });
   }
 
