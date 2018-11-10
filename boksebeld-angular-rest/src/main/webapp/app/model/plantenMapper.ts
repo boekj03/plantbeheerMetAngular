@@ -3,6 +3,8 @@ import {forEach} from '@angular/router/src/utils/collection';
 import {BeplantingsPlan} from './beplantingsPlan';
 import {plantsoortConstants} from './enumConstants';
 import {PlantPlaats} from './plantPlaats';
+import {MaandenSort} from './maandSorteerder';
+
 
 export class PlantenMapper {
 
@@ -43,9 +45,10 @@ export class PlantenMapper {
     plant.base64Image = item.base64Image;
     plant.image = item.image;
 
+    plant.bloeitijdLijst = MaandenSort.sorteerMaanden(plant.bloeitijdLijst);
       for (let i = 0; i < plant.bloeitijdLijst.length; i++) {
-        if ( plant.bloeitijdLijst[i] === 'maart') {
-          PlantenMapper.voegBloeitijdToe(plant, 'mrt' + ' ');
+        if ( plant.bloeitijdLijst[i] === 'MAART') {
+          PlantenMapper.voegBloeitijdToe(plant, 'MRT' + ' ');
        } else {
           PlantenMapper.voegBloeitijdToe(plant,  plant.bloeitijdLijst[i].substr(0, 3) + ' ');
         }
