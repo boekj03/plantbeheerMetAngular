@@ -1,6 +1,7 @@
 import {SelectItem} from "primeng/primeng";
 
 export const kleurenConstants =  [
+      {label: 'nog geen keuze', value: null},
       {label: 'wit', value: 'WIT'},
       {label: 'blauw', value: 'BLAUW'},
       {label: 'paars', value: 'PAARS'},
@@ -24,6 +25,7 @@ export const kleurenConstantsFilter =  [
 
 
 export const bladhoudendConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: 'bladhoudend', value: 'BLADHOUDEN'},
   {label: 'bladverliezend', value: 'BLANDVERLIEZEND'}
 ];
@@ -35,6 +37,7 @@ export const bladhoudendConstantsFilter =  [
 ];
 
 export const grondsoortConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: 'Droog', value: 'DROOG'},
   {label: 'Nat', value: 'NAT'},
   {label: 'Elke grondsoort', value: 'ELKEGRONDSOORT'}
@@ -47,6 +50,7 @@ export const grondsoortFiltering =  [
   {label: 'Elke grondsoort', value: 'ELKEGRONDSOORT'}
 ];
 export const hoogteConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: '5 tot 10 cm', value: 'VIJF_TIEN'},
   {label: '10 tot 30 cm', value: 'TIEN_DERTIG'},
   {label: '30 tot 60 cm', value: 'DERTIG_ZESTIG'},
@@ -70,6 +74,7 @@ export const hoogteConstantsFiltering =  [
 ];
 
 export const bloeitijdConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: 'januari', value: 'JANUARI'},
   {label: 'februari', value: 'FEBRUARI'},
   {label: 'maart', value: 'MAART'},
@@ -100,6 +105,7 @@ export const bloeitijdConstantsFilter =  [
 ];
 
 export const plantsoortConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: 'Heester', value: 'HEESTER'},
   {label: 'Vaste plant', value: 'VASTEPLANT'},
   {label: 'Eenjarig', value: 'EENJARIG'},
@@ -119,6 +125,7 @@ export const plantsoortFiltering =  [
 ];
 
 export const lichtbehoefteConstants =  [
+  {label: 'nog geen keuze', value: null},
   {label: 'Zon', value: 'ZON'},
   {label: 'Schaduw', value: 'SCHADUW'},
   {label: 'Halfschaduw', value: 'halfschaduw'}
