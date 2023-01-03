@@ -10,12 +10,12 @@ import {Http, ResponseContentType} from '@angular/http';
 export class ExcelService {
   url = 'rest/excel';
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
 
 
   excelPlan(id: number) {
-      return this.http.get(this.url + '/' + id,  { responseType: ResponseContentType.Blob});
+      return this.http.get(this.url + '/' + id,  { responseType:  'blob' as 'json' });
   }
 
 

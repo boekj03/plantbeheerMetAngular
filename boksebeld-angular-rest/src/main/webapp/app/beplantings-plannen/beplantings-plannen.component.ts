@@ -5,6 +5,7 @@ import {Plant} from '../model/plant';
 import {ExcelService} from '../services/excelService';
 import 'rxjs/Rx' ;
 import {WindowRefService} from '../services/windowRef';
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-beplantings-plannen',
@@ -43,10 +44,10 @@ export class BeplantingsPlannenComponent implements OnInit {
   excelPlan (plan: BeplantingsPlan) {
 
     const naam = plan.naam;
-      const result = this.excelService.excelPlan(plan.id);
+      const  result:Observable<Blob> = this.excelService.excelPlan(plan.id);
       result.subscribe(
         success => {
-          const blob = new Blob([success.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const blob = new Blob([success], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = naam;

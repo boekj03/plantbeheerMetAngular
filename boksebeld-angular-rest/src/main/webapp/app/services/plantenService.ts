@@ -13,7 +13,7 @@ export class PlantenService {
 
   url = 'rest/planten';
 
-  constructor(private http: HttpClient, private httpGeenClient: Http) {}
+  constructor(private http: HttpClient) {}
 
   getPlantenContainer(): Observable<Plant []> {
 
